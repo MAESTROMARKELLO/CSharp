@@ -1,0 +1,31 @@
+using System;
+
+class Player
+{
+    static void Main(string[] args)
+    {
+        // game loop
+        while (true)
+        {
+            // getting 1st enemy data
+            string enemy1 = Console.ReadLine(); 
+            int dist1 = int.Parse(Console.ReadLine()); 
+            
+            // getting 2nd enemy data
+            string enemy2 = Console.ReadLine(); 
+            int dist2 = int.Parse(Console.ReadLine()); 
+            
+            // checking if 1st enemy is closer than 2nd
+            if (dist1 < dist2)
+              // kill 1st enemy
+              Console.WriteLine(enemy1);
+            else
+             // kill 2nd enemy
+             Console.WriteLine(enemy2);             
+        }
+        
+        // leave console open 
+        Console.ReadLine();
+        
+    }
+}
