@@ -1,0 +1,119 @@
+using System;
+using System.Linq;
+using System.IO;
+using System.Text;
+using System.Collections;
+using System.Collections.Generic;
+
+class Player
+{ 
+    public int Number { get; private set; }
+    public string Sign { get; private set; }
+    private List<string> fights = new List<string>();
+
+    public Player(int numb, string sign)
+    {
+        Number = numb;
+        Sign = sign;
+    }
+
+    public bool compareSigns(Player player) {
+        if (this.Sign != player.Sign)
+            return logic(player.Sign);
+         else
+            return compareNumbers(player);
+        }
+      
+    public void addToFights(string str) {
+        this.fights.Add(str);
+    }
+    
+    public void fightsToString() {
+        for (int i = 0; i < fights.Count; i++)
+        {
+            Console.Write(fights[i]);
+            if (i != fights.Count - 1)
+                Console.Write(" ");
+        } 
+    }
+    
+    private bool logic(string sign) {
+        switch (this.Sign)
+        {
+            case "R":
+                if (sign == "L" || sign == "C")
+                    return true;
+                else
+                    return false;                    
+            case "P":
+                 if (sign == "R" || sign == "S")
+                    return true;
+                 else
+                    return false;
+            case "C":
+                 if (sign == "P" || sign == "L")
+                    return true;
+                 else
+                    return false;
+            case "L":
+                 if (sign == "S" || sign == "P")
+                    return true;
+                 else
+                    return false;
+            default:
+                 if (sign == "R" || sign == "C")
+                    return true;
+                 else
+                    return false;
+        }
+    }
+    
+    private bool compareNumbers(Player player) {
+        return this.Number < player.Number;
+    }
+}
+
+class Solution
+{
+    static void Main(string[] args)
+    {
+        int numberOfPlayers = int.Parse(Console.ReadLine());
+        var players = new List<Player>();
+            
+        for (int k = 0; k < numberOfPlayers; k++)
+        {
+            string[] inputs = Console.ReadLine().Split(' ');
+
+            players.Add(new Player(int.Parse(inputs[0]), inputs[1]));
+        }
+
+        int i = 0;
+        int j = 1;
+
+        while (true)
+        {
+            if (players.Count == 1)
+                break;
+
+            if (players[i].compareSigns(players[j]))
+            {
+                players[i].addToFights(players[j].Number.ToString());
+                players.RemoveAt(j);
+            }
+            else {
+                players[j].addToFights(players[i].Number.ToString());
+                players.RemoveAt(i);
+            }
+                
+            i++;
+            j++;
+
+            if (j >= players.Count) {
+                i = 0;
+                j = 1;
+            }
+        }
+        Console.WriteLine(players[0].Number);
+        players[0].fightsToString();
+    }
+}
