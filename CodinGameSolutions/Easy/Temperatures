@@ -1,0 +1,36 @@
+using System;
+using System.Linq;
+using System.IO;
+using System.Text;
+using System.Collections;
+using System.Collections.Generic;
+
+
+class Solution
+{
+    static void Main(string[] args)
+    {
+        int n = int.Parse(Console.ReadLine());
+        
+        if(n == 0)
+            Console.WriteLine(0);
+        else {
+            string[] inputs = Console.ReadLine().Split(' ');
+            int minTemp = int.Parse(inputs[0]);
+
+            for (int i = 1; i < n; i++)
+            {
+                int t = int.Parse(inputs[i]);
+
+                if(Math.Abs(0 - t) < Math.Abs(0 - minTemp))
+                    minTemp = t;
+                else if(Math.Abs(0 - t) == Math.Abs(0 - minTemp)){
+                    if(t > 0)
+                        minTemp = t;
+                } 
+            }
+
+            Console.WriteLine(minTemp);
+        }
+    }
+}
