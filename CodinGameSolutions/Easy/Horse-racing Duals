@@ -1,0 +1,30 @@
+using System;
+using System.Linq;
+using System.IO;
+using System.Text;
+using System.Collections;
+using System.Collections.Generic;
+
+
+class Solution
+{
+    static void Main(string[] args)
+    {
+        int N = int.Parse(Console.ReadLine());
+        int[] horses = new int[N];
+
+        for (int i = 0; i < N; i++)
+        {
+            horses[i] = int.Parse(Console.ReadLine());
+        }
+
+        Array.Sort(horses);
+        int minDifference = horses[1]-horses[0];    
+
+        for(int i = 1; i < horses.Length - 1; i++){
+            if(horses[i+1] - horses[i] < minDifference)
+                minDifference = horses[i+1] - horses[i];
+        }
+        Console.WriteLine(minDifference);
+    }
+}
