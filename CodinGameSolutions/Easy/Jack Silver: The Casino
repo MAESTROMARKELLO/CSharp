@@ -1,0 +1,67 @@
+using System;
+using System.Linq;
+using System.IO;
+using System.Text;
+using System.Collections;
+using System.Collections.Generic;
+
+class Target
+{
+    public int Cash { get; private set; }
+    private int currentBet;
+    private string[] call;
+
+    public Target(int cash)
+    {
+        this.Cash = cash;
+    }
+
+    public void MakeCall(string call) {
+        this.call = call.Split(" ");
+    }
+
+    public void CheckCall() {
+        this.currentBet = this.Cash / 4;
+        switch (this.call[1])
+        {
+            case "EVEN":
+                if (int.Parse(this.call[0]) % 2 == 0 && this.call[0] != "0")
+                    this.Cash += this.currentBet;
+                else
+                    this.Cash -= this.currentBet;
+                break;
+            case "ODD":
+                if (int.Parse(this.call[0]) % 2 != 0)
+                    this.Cash += this.currentBet;
+                else
+                    this.Cash -= this.currentBet;
+                break;
+            case "PLAIN":
+                if (this.call[2] == this.call[0])
+                    this.Cash += this.currentBet * 35;
+                else
+                    this.Cash -= this.currentBet;
+                break;
+            default:
+                throw new InvalidOperationException();
+        }
+    }    
+}    
+class Solution
+{
+    static void Main(string[] args)
+    {
+        int ROUNDS = int.Parse(Console.ReadLine());
+
+        int CASH = int.Parse(Console.ReadLine());
+        var target = new Target(CASH);
+
+        for (int i = 0; i < ROUNDS; i++)
+        {
+            target.MakeCall(Console.ReadLine());
+            target.CheckCall();
+        }
+
+        Console.WriteLine(target.Cash - 3);
+    }
+}
