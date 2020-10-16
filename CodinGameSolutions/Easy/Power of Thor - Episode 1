@@ -1,0 +1,87 @@
+using System;
+using System.Linq;
+using System.IO;
+using System.Text;
+using System.Collections;
+using System.Collections.Generic;
+
+class Player
+{
+    static void Main(string[] args)
+    {
+        string[] inputs = Console.ReadLine().Split(' ');
+        int lightX = int.Parse(inputs[0]);
+        int lightY = int.Parse(inputs[1]);
+        int initialTx = int.Parse(inputs[2]);
+        int initialTy = int.Parse(inputs[3]);
+
+        while (true)
+        {
+            int remainingTurns = int.Parse(Console.ReadLine());
+
+            if (lightY < initialTy)
+            {
+                switch (checkDifference(lightX, initialTx))
+                {
+                    case 1:
+                        initialTy--;
+                        Console.WriteLine("N");
+                        break;
+                    case 2:
+                        initialTx--;
+                        initialTy--;
+                        Console.WriteLine("NW");
+                        break;
+                    case 3:
+                        initialTx++;
+                        initialTy--;
+                        Console.WriteLine("NE");
+                        break;
+                    default: break;
+                }
+            }
+            else if (lightY > initialTy)
+            {
+                switch (checkDifference(lightX, initialTx))
+                {
+                    case 1:
+                        initialTy++;
+                        Console.WriteLine("S");
+                        break;
+                    case 2:
+                        initialTx++;
+                        initialTy++;
+                        Console.WriteLine("SW");
+                        break;
+                    case 3:
+                        initialTx--;
+                        initialTy++;
+                        Console.WriteLine("SE");
+                        break;
+                    default: break;
+                }
+            }
+            else {
+                switch (checkDifference(lightX, initialTx)) {
+                    case 2:
+                        initialTx--;
+                        Console.WriteLine("W");
+                        break;
+                    case 3:
+                        initialTx++;
+                        Console.WriteLine("E");
+                        break;
+                    default: break;
+                }
+            }
+        }
+    }
+    static int checkDifference(int a, int b) {
+        if (a == b)
+            return 1;
+        else if (a < b)
+            return 2;
+        else
+            return 3;
+    }
+}
