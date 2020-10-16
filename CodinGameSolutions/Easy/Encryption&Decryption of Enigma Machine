@@ -1,0 +1,117 @@
+using System;
+using System.Linq;
+using System.IO;
+using System.Text;
+using System.Collections;
+using System.Collections.Generic;
+
+class Cryptor
+{
+    private readonly string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    private string[] rotors = new string[3];
+    private int rotorCount = 0;
+    public Function func { get; private set; }
+    public int StartingShift { get; private set; }
+    public string Message { get; private set; }
+
+    public Cryptor()
+    {
+        this.func = GetFunction(Console.ReadLine());
+        this.StartingShift = int.Parse(Console.ReadLine());
+        GetRotors();
+        this.Message = Console.ReadLine();
+    }
+
+    public void DoShift() {
+        string buffer = "";
+        if (func == Function.Encode)
+        {
+            for (int i = 0; i < Message.Length; i++)
+            {
+                int index = this.alphabet.IndexOf(this.Message[i]) + this.StartingShift;
+                while(index > 26)
+                    index -= 26;
+                buffer += this.alphabet[index];
+                this.StartingShift++;
+            }
+        }
+        else {
+            for (int i = 0; i < Message.Length; i++)
+            {
+                int index = this.alphabet.IndexOf(this.Message[i]) - this.StartingShift;
+                while(index < 0)
+                    index += 26;
+                buffer += this.alphabet[index];
+                this.StartingShift++;
+            }
+        }
+        this.Message = buffer;
+    }
+
+    public void passRotor() {
+        string buffer = "";
+        if (this.func == Function.Encode)
+        {
+            for (int i = 0; i < this.Message.Length; i++)
+            {
+                buffer += this.rotors[this.rotorCount][this.alphabet.IndexOf(Message[i])];
+            }
+        }
+        else {
+            for (int i = 0; i < this.Message.Length; i++)
+            {
+                buffer += this.alphabet[this.rotors[2-this.rotorCount].IndexOf(Message[i])];
+            }
+        }
+        this.Message = buffer;
+        this.rotorCount++;
+    }
+
+    private Function GetFunction(string proccess) {
+        if (proccess == "ENCODE")
+            return Function.Encode;
+        else if (proccess == "DECODE")
+            return Function.Decode;
+        else
+            throw new InvalidOperationException();    
+    }    
+
+    private void GetRotors()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            this.rotors[i] = Console.ReadLine();
+        }
+    }
+}
+
+public enum Function { 
+        Encode,
+        Decode
+}
+
+class Solution
+{
+    static void Main(string[] args)
+    {
+        Cryptor cr = new Cryptor();
+        
+        if (cr.func == Function.Encode)
+        {
+            cr.DoShift();
+            for (int i = 0; i < 3; i++)
+            {
+                cr.passRotor();
+            }
+            Console.WriteLine(cr.Message);
+        }
+        else {
+            for (int i = 0; i < 3; i++)
+            {
+                    cr.passRotor();
+            }
+            cr.DoShift();
+            Console.WriteLine(cr.Message);
+        }
+    }
+}
