@@ -1,0 +1,58 @@
+using System;
+using System.Linq;
+using System.IO;
+using System.Text;
+using System.Collections;
+using System.Collections.Generic;
+
+class Solution
+{
+    static void Main(string[] args)
+    {
+        string b = Console.ReadLine();
+
+        var indexes = getAll(b, '0');
+        char[] charB = b.ToCharArray();
+        int max_count = 0;
+
+        for (int i = 0; i < indexes.Count; i++)
+        {
+            charB[indexes[i]] = '1';
+            int count = 0;
+                
+            for (int j = 0; j < charB.Length; j++)
+            {
+                if (charB[j] == '1') {
+                    count++;
+                    if (j == charB.Length - 1)
+                    {
+                        if (count > max_count)
+                            max_count = count;
+                    }
+                }
+                else
+                {
+                    if (count > max_count)
+                        max_count = count;
+                    count = 0;
+                }
+            }
+
+            charB[indexes[i]] = '0';
+        }
+
+        Console.WriteLine(max_count);
+}
+
+    static List<int> getAll(string str, char elem) {
+        var indexes = new List<int>();
+
+        for (int i = 0; i < str.Length; i++)
+        {
+            if (str[i] == elem)
+                indexes.Add(i);
+        }
+
+        return indexes;
+    }
+}
